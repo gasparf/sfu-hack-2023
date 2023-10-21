@@ -15,11 +15,14 @@ import { useSelector } from "react-redux";
 import { RootState, useRootDispatch, useRootState } from "@/provider/store";
 import dateConsumptionAction from "@/provider/store/actions/dateConsumption.action";
 import cacheAction from "@/provider/store/actions/cache.action";
+import { useRouter } from "next/router";
 
 const NewItemScreen = (props) => {
 	const app_date = useSelector<RootState>(
 		(state) => state.general.app_date
 	) as string;
+
+	const session = useRouter().query?.session || "breakfast";
 
 	// Set the modal ID - Handles also the modal visibility
 	const [modalItemID, setModalItemID] = useState<string>();
@@ -58,70 +61,37 @@ const NewItemScreen = (props) => {
 	 */
 	const OpenModal = (food_name) => setModalItemID(food_name);
 
-	// // Header date system
-	// const is_today = todayDate() === app_date;
-	// const decompose_date = extract_data_from_date(app_date);
+	// Header date system
+	const is_today = todayDate() === app_date;
+	const decompose_date = extract_data_from_date(app_date);
 
-	// // Stringified week
-	// const week = transform_week_to_string(
-	// 	get_week_of_date(decompose_date[0], decompose_date[1], decompose_date[2])
-	// );
+	// Stringified week
+	const week = transform_week_to_string(
+		get_week_of_date(decompose_date[0], decompose_date[1], decompose_date[2])
+	);
 
-	// // Check if the date month is current month
-	// const is_current_month = parseInt(decompose_date[1]) == new Date().getMonth();
-	// // Stringified month
-	// const month = transform_month_to_string(decompose_date[1]);
+	// Check if the date month is current month
+	const is_current_month = parseInt(decompose_date[1]) == new Date().getMonth();
+	// Stringified month
+	const month = transform_month_to_string(decompose_date[1]);
 
-	// // check if the date year is current year
-	// const is_current_year =
-	// 	parseInt(decompose_date[2]) === new Date().getFullYear();
+	// check if the date year is current year
+	const is_current_year =
+		parseInt(decompose_date[2]) === new Date().getFullYear();
 
-	// const year = decompose_date[2];
+	const year = decompose_date[2];
 
-	// const timing = is_today
-	// 	? "Today"
-	// 	: week +
-	// 	  " " +
-	// 	  decompose_date[0] +
-	// 	  ((!is_current_month && " " + month) || "") +
-	// 	  ((!is_current_year && " " + year) || "");
+	const timing = is_today
+		? "Today"
+		: week +
+		  " " +
+		  decompose_date[0] +
+		  ((!is_current_month && " " + month) || "") +
+		  ((!is_current_year && " " + year) || "");
 
 	return (
-		// <SafeAreadiv style={styles.container}>
-		// 	<Scrolldiv stickyHeaderIndices={[1]}>
-		// 		<Header
-		// 			goBack={true}
-		// 			navigation={props.navigation}
-		// 			page={session}
-		// 			small={timing}
-		// 		/>
-		// 		<SearchInput
-		// 			placeholder="Search for a product"
-		// 			onSearch={Search}
-		// 			loading={loading}
-		// 		/>
-		// 		{results && results.length > 0 ? (
-		// 			<>
-		// 				<p style={styles.smallp}>Results</p>
-		// 				<SearchResultRender OpenModal={OpenModal} items={results} />
-		// 			</>
-		// 		) : (
-		// 			<>
-		// 				<p style={styles.smallp}>Your Favourites</p>
-		// 				<FavouritesRender session={session} />
-		// 			</>
-		// 		)}
-		// 		{modalItemID && (
-		// 			<ItemModal
-		// 				visible={!!modalItemID}
-		// 				onDismiss={CloseModal}
-		// 				ID={modalItemID}
-		// 				session={session}
-		// 			/>
-		// 		)}
-		// 	</Scrolldiv>
-		// </SafeAreadiv>
 		<div className="bg-white h-screen">
+			{timing}
 			<SearchInput
 				onSearch={Search}
 				loading={loading}
@@ -149,7 +119,7 @@ const NewItemScreen = (props) => {
 					visible={!!modalItemID}
 					onDismiss={CloseModal}
 					ID={modalItemID}
-					session={Session.breakfast}
+					session={session}
 				/>
 			)}
 		</div>

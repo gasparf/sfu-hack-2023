@@ -51,9 +51,9 @@ const LoadProfile = async () => {
   const profile: Profile = await db.getProfile();
   log("[PROFILE]", profile);
 
-  if (!profile?.new_user) {
-    store.dispatch(profileSlice.actions.loadProfile(profile));
-  }
+  // if (!profile?.new_user) {
+  //   store.dispatch(profileSlice.actions.loadProfile(profile));
+  // }
 };
 
 /**

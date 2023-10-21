@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Profile } from "../../../interface";
+import { Gender, Profile } from "../../../interface";
 
 /**
  * @connect db.getProfile - cache
@@ -20,18 +20,18 @@ const updateProfile = (state: Profile, { payload }: PayloadAction<any>) => ({
 });
 
 const initialState: Profile = {
-  calories_target: null,
+  calories_target: 0,
   date_of_birth: {
-    age: null,
-    value: null,
+    age: 0,
+    value: "",
   },
-  gender: null,
-  height: null,
-  mass: null,
-  name: null,
-  new_user: null,
-  username: null,
-  version: null,
+  gender: Gender.other,
+  height: 0,
+  mass: 0,
+  name: "",
+  new_user: false,
+  username: "",
+  version: "",
 };
 
 export const profileSlice = createSlice({
