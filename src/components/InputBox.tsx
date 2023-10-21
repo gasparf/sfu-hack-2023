@@ -1,7 +1,4 @@
-// export function checkInput() {
-
-// }
-import TextSubmit from "./text_Submit"
+import TextSubmit from "./SubmitButton"
 
 export default function InputBox() {
     return (
