@@ -13,6 +13,7 @@ import Navbar from "@/components/Navbar";
 import Body from "@/components/Body";
 import InputBox from "@/components/InputBox";
 import SignIn from "@/components/SignIn";
+import Welcome from "../components/Welcome";
 // import GoogleSignIn from "@/components/GoogleAuth";
 import nutritionix from "@/nutritionix-api";
 
@@ -32,20 +33,14 @@ export default function Home() {
 
 	return (
 		<main className="flex min-h-screen flex-col bg-white ">
-			<Navbar />
-			<Body />
-			<InputBox />
+     	<Navbar />
+		
 			{!currentUser && (
-				<>
-					<SignIn />
-					{/* <button onClick={signin}>sign in</button>
-					<button onClick={signup}>sign up</button> */}
-					{/* <button onClick={googleAuth}>Authenticate with google</button> */}
-					{/* <GoogleSignIn/> */}
-				</>
+				<Welcome />
 			)}
 			{currentUser && (
 				<>
+					<Body />
 					<button onClick={logout}>logout</button>
 				</>
 			)}
