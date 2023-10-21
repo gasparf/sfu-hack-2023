@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import colors from "../colors";
 import nutritionix from "@/nutritionix-api";
-import { CommonItem, SearchCommonItem } from "../interface";
+import { CommonItem, SearchCommonItem, Session } from "../interface";
 
 import {
 	extract_data_from_date,
@@ -12,7 +12,7 @@ import {
 	transform_week_to_string,
 } from "../time";
 import { useSelector } from "react-redux";
-import { RootState, useRootDispatch } from "@/provider/store";
+import { RootState, useRootDispatch, useRootState } from "@/provider/store";
 import dateConsumptionAction from "@/provider/store/actions/dateConsumption.action";
 import cacheAction from "@/provider/store/actions/cache.action";
 
@@ -87,8 +87,8 @@ const NewItemScreen = (props) => {
 	// 	  ((!is_current_year && " " + year) || "");
 
 	return (
-		// <SafeAreaView style={styles.container}>
-		// 	<ScrollView stickyHeaderIndices={[1]}>
+		// <SafeAreadiv style={styles.container}>
+		// 	<Scrolldiv stickyHeaderIndices={[1]}>
 		// 		<Header
 		// 			goBack={true}
 		// 			navigation={props.navigation}
@@ -102,12 +102,12 @@ const NewItemScreen = (props) => {
 		// 		/>
 		// 		{results && results.length > 0 ? (
 		// 			<>
-		// 				<Text style={styles.smallText}>Results</Text>
+		// 				<p style={styles.smallp}>Results</p>
 		// 				<SearchResultRender OpenModal={OpenModal} items={results} />
 		// 			</>
 		// 		) : (
 		// 			<>
-		// 				<Text style={styles.smallText}>Your Favourites</Text>
+		// 				<p style={styles.smallp}>Your Favourites</p>
 		// 				<FavouritesRender session={session} />
 		// 			</>
 		// 		)}
@@ -119,8 +119,8 @@ const NewItemScreen = (props) => {
 		// 				session={session}
 		// 			/>
 		// 		)}
-		// 	</ScrollView>
-		// </SafeAreaView>
+		// 	</Scrolldiv>
+		// </SafeAreadiv>
 		<div className="bg-white h-screen">
 			<SearchInput
 				onSearch={Search}
@@ -141,6 +141,7 @@ const NewItemScreen = (props) => {
 				<>
 					<p>Your Favourites</p>
 					{/* <FavouritesRender session={session} /> */}
+					<RenderFavourite />
 				</>
 			)}
 			{modalItemID && (
@@ -148,7 +149,7 @@ const NewItemScreen = (props) => {
 					visible={!!modalItemID}
 					onDismiss={CloseModal}
 					ID={modalItemID}
-					session={session}
+					session={Session.breakfast}
 				/>
 			)}
 		</div>
@@ -163,15 +164,15 @@ const SearchInput = (props: {
 	loading: boolean;
 	placeholder: string;
 }) => {
-	const [text, setText] = useState<string>();
+	const [p, setp] = useState<string>();
 	return (
 		<div>
 			<input
 				placeholder={props.placeholder}
-				value={text}
-				onChange={(e) => setText(e.target.value)}
+				value={p}
+				onChange={(e) => setp(e.target.value)}
 			/>
-			<button onClick={() => props.onSearch(text)}>Search</button>
+			<button onClick={() => props.onSearch(p)}>Search</button>
 		</div>
 	);
 };
@@ -193,7 +194,7 @@ const ItemCard = ({
 				</div>
 			</div>
 			<div>
-				<button onClick={onPress}>Show</button>
+				<button onClick={() => onPress(food_name)}>Show</button>
 			</div>
 		</div>
 	);
@@ -229,6 +230,8 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 		quantity: quantity || 1,
 	};
 
+	console.log(data);
+
 	// The Search function is ran to get the main item
 	useEffect(() => {
 		setLoading(true);
@@ -240,11 +243,12 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 		})();
 
 		setLoading(false);
-	}, []);
+	}, [ID]);
 
 	// The function fetched the main item for its details
 	const Search = async () => {
 		const result = await nutritionix.nutrients(ID);
+		console.log(result);
 		set_result(result);
 	};
 
@@ -260,10 +264,19 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 	// Add the item to the favourite list
 	const setFavourite = async () => dispatch(cacheAction.AddFavouriteItem(data));
 
-	if (loading || !data) return <></>;
-
 	return (
-		<div>
+		<div
+			style={{
+				width: 400,
+				height: 400,
+				background: "white",
+				position: "absolute",
+				top: "50%",
+				left: "50%",
+				boxShadow: "0 0 10px 2px rgba(0,0,0,.3)",
+				transform: "translate(-50%,-50%)",
+			}}
+		>
 			<div>
 				{result && (
 					<div>
@@ -285,6 +298,156 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 							<button onClick={AddNewItem}>Save</button>
 						</div>
 					</div>
+				)}
+			</div>
+		</div>
+	);
+};
+
+const RenderFavourite = () => {
+	const favourites = useRootState((state) => state.cache.favourites);
+	return (
+		<div style={{ margin: 20 }}>
+			{favourites.length > 0 ? (
+				favourites.map((favourite) => (
+					<FavouriteCard
+						key={favourite.id as number}
+						item={favourite}
+						session={Session.breakfast}
+					/>
+				))
+			) : (
+				<p>No favourites</p>
+			)}
+		</div>
+	);
+};
+
+/**
+ * Favourite card design component
+ * @requires item (CommonItem)
+ * @requires session (Fields)
+ */
+const FavouriteCard = ({
+	item,
+	session,
+}: {
+	item: CommonItem;
+	session: Session;
+}) => {
+	const dispatch = useRootDispatch();
+	const { food_name, serving_qty, serving_unit, calories, quantity } = item;
+
+	// The state contains the ID of the added item
+	const [isAdded, setIsAdded] = useState(null); // contains the new id of the added product
+	const [number, setNumber] = useState(0);
+
+	/**
+	 * Add a new item to the daily list
+	 * The data is stored on mobile and local state
+	 * The id of the element is changed so to not create a conflict. That's
+	 * beacuse all the consumed items have a unique id
+	 */
+	const addItem = async () => {
+		// Create a unique id for the new item
+		const ID = Math.random() * 10e8;
+		const data: CommonItem = {
+			...item,
+			id: ID,
+			consumed_at: Date.now(),
+			quantity: number || 1,
+		};
+
+		await dispatch(dateConsumptionAction.AddItemToRecord(session, data));
+
+		// The item has been added, change the state and show the remove button
+		setIsAdded(ID);
+		setNumber(0);
+	};
+
+	/**
+	 *
+	 * Remove an item from the consumed list.
+	 */
+	const removeItem = async () => {
+		// isAdded is the ID of the item which got stored through the addItem function above
+		await dispatch(
+			dateConsumptionAction.RemoveItemFromRecord(session, isAdded)
+		);
+		setIsAdded(null);
+	};
+
+	/**
+	 * Remove current favourite item from the list
+	 */
+	const removeFavouriteItem = async () =>
+		dispatch(cacheAction.RemoveFavouriteItem(item.food_name, item.calories));
+
+	return (
+		<div>
+			<div style={{ flex: 1 }}>
+				<p>{food_name}</p>
+				<p
+					style={{
+						marginTop: 2,
+						color: colors.app.dark_300,
+						fontFamily: "Inter",
+						flexWrap: "wrap",
+					}}
+				>
+					{quantity} x {serving_unit} ({serving_qty}) / {calories} kcal
+				</p>
+			</div>
+			<div
+				style={{ flexDirection: "row", alignItems: "center", marginLeft: 30 }}
+			>
+				{isAdded ? (
+					<button onClick={removeItem}>Remove Favourite</button>
+				) : (
+					<div style={{ flexDirection: "row", alignItems: "center" }}>
+						<button
+							onClick={(number > 0 && (() => setNumber(number - 1))) || null}
+						>
+							<div
+								style={{
+									paddingRight: 10,
+									height: 25,
+									justifyContent: "center",
+								}}
+							>
+								-
+							</div>
+						</button>
+						<p
+							style={{
+								color: number === 0 ? colors.app.dark_200 : colors.app.dark_400,
+								fontFamily: "Inter-Medium",
+								justifyContent: "center",
+							}}
+						>
+							{number}
+						</p>
+						<button onClick={() => setNumber(number + 1)}>
+							<div
+								style={{
+									paddingLeft: 10,
+									height: 25,
+									justifyContent: "center",
+								}}
+							>
+								+
+							</div>
+						</button>
+					</div>
+				)}
+				{number > 0 ? (
+					<button onClick={addItem}>
+						<p>Add</p>
+					</button>
+				) : (
+					<button onClick={removeFavouriteItem}>
+						<p>Remove</p>
+					</button>
 				)}
 			</div>
 		</div>

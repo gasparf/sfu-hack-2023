@@ -6,6 +6,7 @@ import { dateConsumptionSlice } from "../reducers/dateConsumption.reducer";
 const AddItemToRecord =
   (session?: Session, item?: CommonItem) =>
   async (dispatch: RootDispatch, getState: () => RootState) => {
+    console.log(session)
     try {
       const state = getState();
       await db.addItem(state.general.app_date, session, item);
@@ -16,7 +17,7 @@ const AddItemToRecord =
         })
       );
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 

@@ -8,9 +8,9 @@ import { Provider } from "react-redux";
 
 export default function App({ Component, pageProps }: AppProps) {
 	useEffect(() => {
-		async () => {
+		(async () => {
 			await LoadCache();
-		};
+		})();
 	});
 	return (
 		<Provider store={store}>
