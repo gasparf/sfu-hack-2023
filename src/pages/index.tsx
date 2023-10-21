@@ -20,37 +20,17 @@ export default function Home() {
 	React.useEffect(() => {
 		(async () => {})();
 	}, []);
-	const signin = async () => {
-		console.log(await signInUser("ishwak@gmail.com", "ishwak09"));
-	};
-
-	const signup = async () => {
-		console.log(await signUpUser("ishwak@gmail.com", "ishwak09"));
-	};
 
 	const logout = async () => {
 		await signOut(() => {});
-	};
-
-	const googleAuth = async () => {
-		await authWithGoogle();
 	};
 
 	return (
 		<main className="flex min-h-screen flex-col bg-white ">
      <Navbar />
      <Body />
-     <InputBox/>
-			{!currentUser && (
-				<>
-					<button onClick={signin}>sign in</button>
-					<button onClick={signup}>sign up</button>
-					<button onClick={googleAuth}>Authenticate with google</button>
-				</>
-			)}
 			{currentUser && (
 				<>
-					<h3>Welcome {currentUser.email}</h3>
 					<button onClick={logout}>logout</button>
 				</>
 			)}

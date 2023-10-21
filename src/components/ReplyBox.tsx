@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 interface ReplyBox {
     isPerson: boolean;
     date: String;
+    text:string;
 }
 
-const ReplyBox:React.FC<ReplyBox> = ({isPerson,date}) => {
+const ReplyBox:React.FC<ReplyBox> = ({isPerson,date, text}) => {
+  const [expand, setExpand] = useState(false)
     // const boxStyles =  isPerson ? "justify-end" : ""
     return (
         <div className={isPerson != false ? "float-right clear-both" : "float-left clear-both"}>
@@ -15,6 +17,7 @@ const ReplyBox:React.FC<ReplyBox> = ({isPerson,date}) => {
                 <p className="font-large text-sm text-white font-semibold mb-2">
                   {isPerson == false ? "AI" : "You"} 
                 </p>
+                <p onClick={() => setExpand(true)}>{isPerson ? text : text.length > 200 ? expand ? text : text.slice(0,200)+"... Read more" : text}</p>
                 <p className="text-black text-right font-light" style={{fontSize: 9}}>
                   {date}
                 </p>
