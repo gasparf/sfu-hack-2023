@@ -11,6 +11,7 @@ import {
 import { AuthContext } from "@/provider/context";
 import Navbar from '@/components/Navbar'
 import Body from '@/components/Body'
+import InputBox from "@/components/InputBox";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -39,6 +40,7 @@ export default function Home() {
 		<main className="flex min-h-screen flex-col bg-white ">
      <Navbar />
      <Body />
+     <InputBox/>
 			{!currentUser && (
 				<>
 					<button onClick={signin}>sign in</button>
