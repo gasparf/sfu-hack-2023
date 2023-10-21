@@ -10,6 +10,7 @@ import {
 } from "@/firebase";
 import { AuthContext } from "@/provider/context";
 import Navbar from '@/components/Navbar'
+import Body from '@/components/Body'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function Home() {
 	return (
 		<main className="flex min-h-screen flex-col bg-white ">
      <Navbar />
+     <Body />
 			{!currentUser && (
 				<>
 					<button onClick={signin}>sign in</button>
