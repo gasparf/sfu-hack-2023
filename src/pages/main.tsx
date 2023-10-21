@@ -47,7 +47,7 @@ const GET_TOTAL_NUTRIENTS = (data, sessions) => {
 	return progress_data;
 };
 
-const MainScreen = ({ navigation }: { navigation: StackNavigationHelpers }) => {
+const MainScreen = ({}: {}) => {
 	const dateConsumption = useSelector<RootState>(
 		(state) => state.dateConsumption
 	) as DateConsumption;
@@ -76,7 +76,17 @@ const MainScreen = ({ navigation }: { navigation: StackNavigationHelpers }) => {
 	const progress_data = GET_TOTAL_NUTRIENTS(dateConsumption, fixed_sessions);
 
 	return (
-		<div>
+		<div
+			style={{
+				display: "flex",
+				alignItems: "center",
+				width: "100%",
+				flexDirection: "column",
+				paddingTop: 40,
+				background: "white",
+				paddingBottom: 40,
+			}}
+		>
 			<Calorimeter target={target} current={progress_data.calories} />
 			<Progresses progress_data={progress_data} />
 			<RenderSessionCards
@@ -86,6 +96,22 @@ const MainScreen = ({ navigation }: { navigation: StackNavigationHelpers }) => {
 		</div>
 	);
 };
+
+const Progress: React.FC<{
+	percentage: number;
+	color1: string;
+}> = (props) => (
+	<div
+		style={{
+			width: 50,
+			height: 50,
+			borderRadius: 100,
+			background: `radial-gradient(closest-side, white 79%, transparent 80% 100%), conic-gradient(${
+				props.color1
+			} ${props.percentage * 100}%, ${props.color1}30 0)`,
+		}}
+	></div>
+);
 
 const Calorimeter = ({
 	target,
@@ -100,10 +126,23 @@ const Calorimeter = ({
 		.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 	return (
-		<div className="">
-			<p style={styles.top_text}>Calories left</p>
-			<p style={styles.calories}>
-				<span style={{ fontFamily: "Inter-Bold" }}>{value}</span> kcal
+		<div style={{ width: "100%" }}>
+			<p
+				style={{
+					fontSize: 18,
+					color: "rgba(0,0,0,.5)",
+					textAlign: "center",
+				}}
+			>
+				Calories left
+			</p>
+			<p
+				style={{
+					textAlign: "center",
+					fontSize: 60,
+				}}
+			>
+				<span style={{ fontWeight: "bold" }}>{value}</span> kcal
 			</p>
 		</div>
 	);
@@ -192,13 +231,37 @@ const Progresses: React.FC<{ progress_data: FoodNutrients }> = (props) => {
 	];
 	console.log(DATA);
 	return (
-		<div style={styles.container}>
+		<div style={{ display: "flex", gap: 50, marginTop: 46, marginBottom: 46 }}>
 			{DATA.map((item) => (
-				<div key={item.title}>
-					<p>Title: {item.title}</p>
-					<p>Percentage: {item.perc}%</p>
-					<p>Consumed: {item.pd}</p>
-					<p>Total consume limit: {item.total_consume}</p>
+				<div
+					key={item.title}
+					style={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "center",
+						gap: 12,
+					}}
+				>
+					<Progress percentage={item.perc} color1={item.color} />
+					<div>
+						<p
+							style={{
+								textTransform: "capitalize",
+								fontSize: 18,
+								color: colors.app.dark_500,
+							}}
+						>
+							{item.title}
+						</p>
+						<p
+							style={{
+								color: colors.app.dark_300,
+								fontSize: 14,
+							}}
+						>
+							{(item.pd - item.total_consume).toFixed(2)}g left
+						</p>
+					</div>
 				</div>
 			))}
 		</div>

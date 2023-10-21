@@ -69,10 +69,30 @@ const RenderSessionCards: React.FC<{
 	};
 
 	return (
-		<div>
+		<div
+			style={{
+				width: "100%",
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+			}}
+		>
 			<p style={styles_main.top_p}>Daily consumption</p>
 
-			{sessions.map((session, index) => _renderItem({ item: session, index }))}
+			<div
+				style={{
+					display: "flex",
+					flexDirection: "column",
+					gap: 20,
+					width: "100%",
+
+					alignItems: "center",
+				}}
+			>
+				{sessions.map((session, index) =>
+					_renderItem({ item: session, index })
+				)}
+			</div>
 		</div>
 	);
 };
@@ -96,6 +116,8 @@ const styles_main = {
 		fontFamily: "Inter",
 		color: colors.app.dark_300,
 		pAlign: "center",
+		marginBottom: 40,
+		marginTop: 20,
 	},
 };
 
@@ -131,7 +153,7 @@ const Item = ({
 		await dispatch(dateConsumptionAction.RemoveItemFromRecord(session, id));
 	};
 	return (
-		<div>
+		<div style={{ marginBottom: 8 }}>
 			<p style={styles.food_name}>
 				{food_name}{" "}
 				<span style={styles.food_name_span}>
@@ -154,20 +176,24 @@ const Item = ({
 
 const styles = {
 	food_name: {
-		fontFamily: "Inter-Medium",
 		fontSize: 17,
 		pTransform: "capitalize",
 		color: colors.app.dark_500,
 	},
-	food_name_span: { fontSize: 10, fontFamily: "Inter" },
+	food_name_span: { fontSize: 10 },
 	container: { marginVertical: 10 },
 	detail_container: {
+		display: "flex",
 		alignItems: "center",
 		flexDirection: "row",
 		justifyContent: "space-between",
 		marginTop: 7.5,
 	},
-	detail_wrapper: { flexDirection: "row", alignItems: "center" },
+	detail_wrapper: {
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+	},
 	info: {
 		color: colors.app.dark_300,
 		fontSize: 12,
