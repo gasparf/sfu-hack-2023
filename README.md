@@ -47,6 +47,12 @@ This is a Fullstack project taht was made using Next.js, Typescript, Tailwindcss
 - Nutritionix API
 - OpenAI
 
+## !!!IMPORTANT
+
+- We are using OpenAI api key and since the repository is public, openAI might disable the API key which will result in the chatbot not working
+- To fix, this you can use your own open AI key by going on the website and use it.
+- To do so, go on src/chat-api/index.ts, section apiKey field.
+
 # **Link to Github Repository: https://github.com/shardaishwak/sfu-hack-2023**
 
 ## Folder structure
