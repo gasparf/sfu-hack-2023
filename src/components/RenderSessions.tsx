@@ -6,6 +6,8 @@ import dateConsumptionAction from "@/provider/store/actions/dateConsumption.acti
 import { digitize } from "../time";
 import colors from "@/colors";
 import Card from "./Card";
+import { AiFillDelete } from "react-icons/ai";
+
 
 /**
  * REnder the session cards
@@ -168,7 +170,7 @@ const Item = ({
 					<p style={styles.info}>{sugar}g</p>
 					<p style={{ color: colors.app.dark_300, fontSize: 12 }}>{fat}g</p>
 				</div>
-				<button onClick={deleteItem}>Delete item</button>
+				<button onClick={deleteItem}><AiFillDelete/></button>
 			</div>
 		</div>
 	);

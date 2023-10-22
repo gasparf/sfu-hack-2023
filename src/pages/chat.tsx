@@ -25,7 +25,6 @@ const chat = () => {
             (<>
                 <Navbar />
                 <Body />
-                <button onClick={logout}>logout</button>
             </>)}
         
         

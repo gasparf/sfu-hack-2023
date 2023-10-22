@@ -2,6 +2,9 @@ import colors from "@/colors";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
+import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+
+
 const ColorCircle: React.FC<{ color: string }> = (props) => (
 	<div
 		style={{
@@ -58,8 +61,8 @@ const Card = ({
 								justifyContent: "space-between",
 							}}
 						>
-							<div style={{ display: "flex" }}>
-								<p>{open ? "Close" : "Open"}</p>
+							<div style={{ display: "flex", alignItems: "center" }}>
+								<p>{open ?  <IoIosArrowDown/> : <IoIosArrowUp/>}</p>
 
 								<p style={styles.title}>{title.split("_").join(" ")}</p>
 							</div>
