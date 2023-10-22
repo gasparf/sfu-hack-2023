@@ -43,33 +43,32 @@ export default function Login() {
 	};
 
     return(
-      
-        <div className="max-w-sm mx-auto p-4">
-        <div className="space-y-4">
-          <div>
-            {/* <label htmlFor="email" className="block text-gray-700">Email:</label> */}
-            <input 
-            value={userEmail}
-            type="email" onChange={(e) => setUserEmail(e.target.value)} id="email" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Enter your email"/>
+        <div className="flex min-h-screen mx-auto justify-center p-4 bg-white items-center">
+          <div className=" space-y-4 border border-black h-[400px] p-10 rounded-xl .ring-1">
+            <div>
+              {/* <label htmlFor="email" className="block text-gray-700">Email:</label> */}
+              <input 
+              value={userEmail}
+              type="email" onChange={(e) => setUserEmail(e.target.value)} id="email" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Enter your email"/>
+            </div>
+    
+            <div>
+              {/* <label htmlFor="password" className="block text-gray-700">Password:</label> */}
+              <input 
+              value = {userPass}
+              onChange={(e) => setUserPass(e.target.value)} type="password" id="password" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Enter your password"/>
+            </div>
+    
+            <button onClick={signin} type="submit" className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition duration-300">
+              Login
+            </button>
+    
+            <button onClick={signup} type="button" className="w-full bg-green-500 text-white p-3 rounded hover:bg-green-600 transition duration-300">
+              Create Account
+            </button>
+              <GoogleSignIn></GoogleSignIn>
+            <p className="flex justify-center mb-0">{error}</p>
           </div>
-  
-          <div>
-            {/* <label htmlFor="password" className="block text-gray-700">Password:</label> */}
-            <input 
-            value = {userPass}
-            onChange={(e) => setUserPass(e.target.value)} type="password" id="password" className="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Enter your password"/>
-          </div>
-  
-          <button onClick={signin} type="submit" className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition duration-300">
-            Login
-          </button>
-  
-          <button onClick={signup} type="button" className="w-full bg-green-500 text-white p-3 rounded hover:bg-green-600 transition duration-300">
-            Create Account
-          </button>
-            <GoogleSignIn></GoogleSignIn>
-            <p>{error}</p>
-        </div>
       </div>
     )
 
