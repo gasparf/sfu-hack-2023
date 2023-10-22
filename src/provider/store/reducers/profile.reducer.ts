@@ -20,7 +20,7 @@ const updateProfile = (state: Profile, { payload }: PayloadAction<any>) => ({
 });
 
 const initialState: Profile = {
-  calories_target: 0,
+  calories_target: 5000,
   date_of_birth: {
     age: 0,
     value: "",

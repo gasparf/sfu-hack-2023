@@ -2,6 +2,19 @@ import colors from "@/colors";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
+const ColorCircle: React.FC<{ color: string }> = (props) => (
+	<div
+		style={{
+			width: 30,
+			height: 30,
+			borderRadius: 30,
+			borderWidth: 4,
+			borderStyle: "solid",
+			borderColor: props.color,
+		}}
+	></div>
+);
+
 /**
  * @connect MainScreen
  * Design of the main per session card
@@ -34,13 +47,20 @@ const Card = ({
 	};
 
 	return (
-		<div style={styles.main_wrap}>
+		<div style={{ width: "40%" }}>
 			<div style={styles.container}>
-				<div onClick={() => setOpen(!open)}>
+				<div style={{ cursor: "pointer" }} onClick={() => setOpen(!open)}>
 					<div>
-						<div>
-							<div>
-								{open ? "Close" : "Open"}
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-between",
+							}}
+						>
+							<div style={{ display: "flex" }}>
+								<p>{open ? "Close" : "Open"}</p>
+
 								<p style={styles.title}>{title.split("_").join(" ")}</p>
 							</div>
 							<p style={styles.calories}>
@@ -49,19 +69,26 @@ const Card = ({
 							</p>
 						</div>
 
-						<div>
-							<div>
-								<div>
-									<div></div>
-									<p style={styles.circle_value}>{t_p.toFixed(1)}g</p>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								justifyContent: "space-between",
+								marginTop: 20,
+							}}
+						>
+							<div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+								<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+									<ColorCircle color={colors.app.orange_100} />
+									<p style={styles.circle_value}>Protein {t_p.toFixed(1)}g</p>
 								</div>
-								<div>
-									<div></div>
-									<p style={styles.circle_value}>{t_f.toFixed(1)}g</p>
+								<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+									<ColorCircle color={colors.app.purple_100} />
+									<p style={styles.circle_value}>Fat {t_f.toFixed(1)}g</p>
 								</div>
-								<div>
-									<div></div>
-									<p style={styles.circle_value}>{t_c.toFixed(1)}g</p>
+								<div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+									<ColorCircle color={colors.app.blue_100} />
+									<p style={styles.circle_value}>Carbs {t_c.toFixed(1)}g</p>
 								</div>
 							</div>
 							<button style={styles.plus} onClick={onClick}>
@@ -100,18 +127,16 @@ const styles = {
 	},
 	title: {
 		fontSize: 20,
-		fontFamily: "Inter-Medium",
 		marginLeft: 10,
 		color: colors.app.dark_600,
-		pTransform: "capitalize",
+		textTransform: "capitalize",
+		fontWeight: 600,
 	},
 	calories: {
-		fontFamily: "Inter-Medium",
 		fontSize: 20,
 		color: colors.app.dark_600,
 	},
 	calories_span: {
-		fontFamily: "Inter",
 		fontSize: 12,
 		color: colors.tailwind.gray._400,
 	},
@@ -125,7 +150,6 @@ const styles = {
 		paddingVertical: 6,
 		paddingHorizontal: 10,
 		color: colors.tailwind.gray._400,
-		fontFamily: "Inter",
 		fontSize: 15,
 		marginRight: 5,
 	},
@@ -148,7 +172,6 @@ const styles = {
 	plusp: {
 		color: "white",
 		fontSize: 20,
-		fontFamily: "Inter",
 		fontWeight: "bold",
 	},
 };

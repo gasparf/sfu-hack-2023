@@ -90,8 +90,34 @@ const NewItemScreen = (props) => {
 		  ((!is_current_year && " " + year) || "");
 
 	return (
-		<div className="bg-white h-screen">
-			{timing}
+		<div
+			style={{
+				background: "white",
+				paddingTop: 30,
+				paddingBottom: 40,
+				minHeight: "100vh",
+			}}
+		>
+			<div
+				style={{
+					margin: "0 auto",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center",
+					flexDirection: "column",
+				}}
+			>
+				<p
+					style={{
+						fontSize: 18,
+						fontWeight: "bold",
+						textTransform: "capitalize",
+					}}
+				>
+					{session.split("_").join(" ")}
+				</p>
+				<p>{timing}</p>
+			</div>
 			<SearchInput
 				onSearch={Search}
 				loading={loading}
@@ -99,20 +125,47 @@ const NewItemScreen = (props) => {
 			/>
 
 			{results && results.length > 0 ? (
-				<>
-					<p>Results</p>
+				<div style={{ marginTop: 40 }}>
+					<p
+						style={{
+							textAlign: "center",
+							fontSize: 18,
+							color: "rgba(0, 0, 0, 0.65)",
+						}}
+					>
+						Results
+					</p>
 					{/** Render data */}
 					{/* <SearchResultRender OpenModal={OpenModal} items={results} /> */}
-					{results.map((item) => (
-						<ItemCard data={item} onPress={OpenModal} key={item.food_name} />
-					))}
-				</>
+					<div
+						style={{
+							width: "40%",
+							margin: "0 auto",
+							display: "flex",
+							flexDirection: "column",
+							gap: 16,
+							marginTop: 20,
+						}}
+					>
+						{results.map((item) => (
+							<ItemCard data={item} onPress={OpenModal} key={item.food_name} />
+						))}
+					</div>
+				</div>
 			) : (
-				<>
-					<p>Your Favourites</p>
+				<div style={{ marginTop: 40 }}>
+					<p
+						style={{
+							textAlign: "center",
+							fontSize: 18,
+							color: "rgba(0, 0, 0, 0.65)",
+						}}
+					>
+						Your Favourites
+					</p>
 					{/* <FavouritesRender session={session} /> */}
 					<RenderFavourite />
-				</>
+				</div>
 			)}
 			{modalItemID && (
 				<ItemModal
@@ -136,13 +189,42 @@ const SearchInput = (props: {
 }) => {
 	const [p, setp] = useState<string>();
 	return (
-		<div>
+		<div
+			style={{
+				width: "40%",
+				margin: "0 auto",
+				flexDirection: "row",
+				alignItems: "center",
+				justifyContent: "space-between",
+				paddingRight: 8,
+				paddingLeft: 20,
+				paddingTop: 4,
+				paddingBottom: 4,
+				borderWidth: 2,
+				borderColor: colors.app.dark_100,
+				backgroundColor: colors.app.dark_100,
+				borderRadius: 15,
+				marginTop: 32,
+				boxSizing: "border-box",
+			}}
+		>
 			<input
 				placeholder={props.placeholder}
 				value={p}
 				onChange={(e) => setp(e.target.value)}
+				style={{ width: "86%", background: "transparent", outline: "none" }}
 			/>
-			<button onClick={() => props.onSearch(p)}>Search</button>
+			<button
+				style={{
+					background: colors.app.green_200,
+					padding: "12px 12px",
+					borderRadius: 12,
+					color: "white",
+				}}
+				onClick={() => props.onSearch(p)}
+			>
+				Search
+			</button>
 		</div>
 	);
 };
@@ -155,13 +237,29 @@ const ItemCard = ({
 	onPress: any;
 }) => {
 	return (
-		<div>
+		<div
+			style={{
+				borderBottom: "2px solid " + colors.tailwind.gray._100,
+				padding: 16,
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "space-between",
+			}}
+		>
 			<div>
-				<p>{food_name}</p>
-				<div>
+				<p
+					style={{
+						fontSize: 21,
+						fontWeight: "bold",
+						textTransform: "capitalize",
+					}}
+				>
+					{food_name}
+				</p>
+				<p style={{ color: colors.app.dark_300 }}>
 					{1} x {serving_unit} ({serving_qty}){" "}
 					{calories && "/ " + calories + "kcal"}
-				</div>
+				</p>
 			</div>
 			<div>
 				<button onClick={() => onPress(food_name)}>Show</button>
@@ -170,8 +268,106 @@ const ItemCard = ({
 	);
 };
 
+const CardItem = ({ title, value, color }) => {
+	return (
+		<div
+			style={{
+				border: "2px solid " + colors.tailwind.blue_gray._100,
+				padding: 20,
+				display: "flex",
+				alignItems: "center",
+				borderRadius: 20,
+				gap: 12,
+			}}
+		>
+			<div
+				style={{ width: 40, height: 40, borderRadius: 12, background: color }}
+			></div>
+			<div>
+				<p style={{ color: colors.app.dark_500, fontWeight: "bold" }}>
+					{title}
+				</p>
+				<p style={{ color: colors.app.dark_500 }}>{value}</p>
+			</div>
+		</div>
+	);
+};
+
+const Cards = ({ data }) => {
+	const data_local = [
+		{
+			id: 1,
+			name: "Calories",
+			value: data.nf_calories.toFixed(1) + " kc",
+
+			opacity_color: colors.tailwind.green._200,
+		},
+		{
+			id: 2,
+			name: "Carbs",
+			value: data.nf_total_carbohydrate.toFixed(1) + "g",
+			opacity_color: colors.tailwind.purple._200,
+		},
+		{
+			id: 3,
+			name: "Fat",
+			value: data.nf_total_fat.toFixed(1) + "g",
+			opacity_color: colors.tailwind.orange._200,
+		},
+		{
+			id: 4,
+			name: "Protein",
+			value: data.nf_protein.toFixed(1) + "g",
+			opacity_color: colors.tailwind.sky._200,
+		},
+	];
+	return (
+		<div
+			style={{
+				display: "grid",
+				gridTemplateColumns: "1fr 1fr",
+				gridRowGap: 12,
+				gridColumnGap: 12,
+				marginTop: 20,
+				padding: "0 20px",
+			}}
+		>
+			{data_local.map((item) => (
+				<CardItem
+					title={item.name}
+					value={item.value}
+					color={item.opacity_color}
+					key={item.id}
+				/>
+			))}
+		</div>
+	);
+};
+
+const FavouriteText = ({ food_name, calories, onClick }) => {
+	const favourites = useRootState((state) => state.cache.favourites);
+	const dispatch = useRootDispatch();
+	// Check if the item is present in the favourites list
+	const isActive = () =>
+		favourites.findIndex(
+			(a) => a.food_name === food_name && a.calories === calories
+		) < 0
+			? false
+			: true;
+
+	// Remove the item from the favourite list
+	const removeFavourite = async () =>
+		dispatch(cacheAction.RemoveFavouriteItem(food_name, calories));
+	return (
+		<button onClick={isActive() ? removeFavourite : onClick}>
+			{isActive() ? "Added" : "Add favorite"}
+		</button>
+	);
+};
+
 const ItemModal = ({ ID, visible, onDismiss, session }) => {
 	const dispatch = useRootDispatch();
+	const router = useRouter();
 
 	const [type, set_type] = useState<string>();
 	const [result, set_result] = useState<any>();
@@ -228,6 +424,7 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 
 		await dispatch(dateConsumptionAction.AddItemToRecord(session, data));
 		setSaveItemLoading(false);
+		router.push("/main");
 		onDismiss();
 	};
 
@@ -237,39 +434,202 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 	return (
 		<div
 			style={{
-				width: 400,
-				height: 400,
-				background: "white",
-				position: "absolute",
-				top: "50%",
-				left: "50%",
-				boxShadow: "0 0 10px 2px rgba(0,0,0,.3)",
-				transform: "translate(-50%,-50%)",
+				width: "100vw",
+				height: "100vh",
+				background: "rgba(0,0,0,.2)",
+				position: "fixed",
+				top: 0,
 			}}
 		>
-			<div>
-				{result && (
-					<div>
+			<div
+				style={{
+					width: 500,
+					background: "white",
+					border: "2px solid " + "rgba(0,0,0,.05)",
+					borderRadius: 20,
+					position: "absolute",
+					left: "50%",
+					top: "50%",
+					transform: "translate(-50%, -50%)",
+				}}
+			>
+				<div>
+					{result && (
 						<div>
-							{/**Children data */}
-
 							<div>
-								Name: {data.food_name}
-								<button onClick={setFavourite}>Favorite</button>
-								Calories: {data.calories}
+								{/**Children data */}
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "space-between",
+										marginTop: 20,
+										padding: "0 20px",
+									}}
+								>
+									<div style={{ width: 90 }}></div>
+									<p
+										style={{
+											fontSize: 21,
+											fontWeight: "bold",
+											textTransform: "capitalize",
+										}}
+									>
+										{data.food_name}
+									</p>
+									<FavouriteText
+										onClick={setFavourite}
+										calories={data.calories}
+										food_name={data.food_name}
+									/>
+								</div>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "space-between",
+										gap: 12,
+										margin: "0 20px",
+										paddingTop: 30,
+									}}
+								>
+									<div
+										style={{
+											background: colors.tailwind.blue_gray._100,
+											borderRadius: 20,
+											flex: 1,
+											padding: 12,
+										}}
+									>
+										<p
+											style={{
+												fontSize: 16,
+												color: colors.tailwind.blue_gray._600,
+												fontWeight: "bold",
+												textAlign: "center",
+											}}
+										>
+											Quantity
+										</p>
+										<div
+											style={{
+												display: "flex",
+												alignItems: "center",
+												justifyContent: "center",
+												gap: 20,
+												color: colors.tailwind.blue_gray._700,
+											}}
+										>
+											<div
+												style={{
+													fontSize: 24,
+													fontWeight: "bold",
+													cursor: "pointer",
+												}}
+												onClick={() =>
+													quantity > 0 ? set_quantity(quantity - 1) : null
+												}
+											>
+												-
+											</div>
+											<p
+												style={{
+													fontSize: 21,
+													fontWeight: "bold",
+													color: "black",
+												}}
+											>
+												{quantity}
+											</p>
+											<div
+												style={{
+													fontSize: 24,
+													fontWeight: "bold",
+													cursor: "pointer",
+												}}
+												onClick={() => set_quantity(quantity + 1)}
+											>
+												+
+											</div>
+										</div>
+									</div>
+									<div
+										style={{
+											background: colors.tailwind.blue_gray._100,
+											borderRadius: 20,
+											flex: 1,
+											padding: 12,
+										}}
+									>
+										<p
+											style={{
+												fontSize: 16,
+												color: colors.tailwind.blue_gray._600,
+												fontWeight: "bold",
+												textAlign: "center",
+											}}
+										>
+											Type
+										</p>
+										<div
+											style={{
+												display: "flex",
+												alignItems: "center",
+												justifyContent: "center",
+												gap: 20,
+												color: colors.tailwind.blue_gray._700,
+											}}
+										>
+											<p
+												style={{
+													fontSize: 21,
+													fontWeight: "bold",
+													color: "black",
+												}}
+											>
+												{data.serving_qty} {data.serving_unit}
+											</p>
+										</div>
+									</div>
+								</div>
+
+								{/** Render data */}
+								{result && <Cards data={result} />}
+
+								<div
+									style={{
+										marginTop: 20,
+										marginBottom: 20,
+										display: "flex",
+										alignItems: "center",
+									}}
+								>
+									<button
+										style={{
+											margin: "0 20px",
+											padding: "16px 0",
+											background: colors.app.green_100,
+
+											marginTop: 20,
+											width: "100%",
+											boxSizing: "border-box",
+											borderRadius: 12,
+											fontSize: 18,
+											fontWeight: "bold",
+											color: "white",
+										}}
+										onClick={AddNewItem}
+									>
+										Save
+									</button>
+								</div>
 							</div>
-							<input
-								value={quantity}
-								onChange={(e) => set_quantity(+e.target.value)}
-							/>
-							<div>Serving unit: {result.serving_unit}</div>
-							{/** Render data */}
-							{/* <Cards data={result} /> */}
-							<button onClick={AddNewItem}>Save</button>
 						</div>
-					</div>
-				)}
+					)}
+				</div>
 			</div>
+
+			<div style={{ width: "100%", height: "100vh" }}></div>
 		</div>
 	);
 };
@@ -277,7 +637,7 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 const RenderFavourite = () => {
 	const favourites = useRootState((state) => state.cache.favourites);
 	return (
-		<div style={{ margin: 20 }}>
+		<div style={{ margin: "0 auto", width: "40%", marginTop: 40 }}>
 			{favourites.length > 0 ? (
 				favourites.map((favourite) => (
 					<FavouriteCard
@@ -287,7 +647,7 @@ const RenderFavourite = () => {
 					/>
 				))
 			) : (
-				<p>No favourites</p>
+				<p style={{ textAlign: "center" }}>No favourites</p>
 			)}
 		</div>
 	);
@@ -354,9 +714,25 @@ const FavouriteCard = ({
 		dispatch(cacheAction.RemoveFavouriteItem(item.food_name, item.calories));
 
 	return (
-		<div>
+		<div
+			style={{
+				borderBottom: "2px solid " + colors.tailwind.blue_gray._100,
+				padding: 20,
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "space-between",
+			}}
+		>
 			<div style={{ flex: 1 }}>
-				<p>{food_name}</p>
+				<p
+					style={{
+						fontSize: 18,
+						fontWeight: "bold",
+						textTransform: "capitalize",
+					}}
+				>
+					{food_name}
+				</p>
 				<p
 					style={{
 						marginTop: 2,
@@ -369,20 +745,33 @@ const FavouriteCard = ({
 				</p>
 			</div>
 			<div
-				style={{ flexDirection: "row", alignItems: "center", marginLeft: 30 }}
+				style={{
+					flexDirection: "row",
+					alignItems: "center",
+					marginLeft: 30,
+					display: "flex",
+				}}
 			>
 				{isAdded ? (
-					<button onClick={removeItem}>Remove Favourite</button>
+					<button onClick={removeItem}>Remove</button>
 				) : (
-					<div style={{ flexDirection: "row", alignItems: "center" }}>
+					<div
+						style={{
+							flexDirection: "row",
+							alignItems: "center",
+							display: "flex",
+						}}
+					>
 						<button
 							onClick={(number > 0 && (() => setNumber(number - 1))) || null}
 						>
 							<div
 								style={{
 									paddingRight: 10,
-									height: 25,
 									justifyContent: "center",
+									fontSize: 24,
+									fontWeight: "bold",
+									color: colors.tailwind.blue_gray._500,
 								}}
 							>
 								-
@@ -391,8 +780,8 @@ const FavouriteCard = ({
 						<p
 							style={{
 								color: number === 0 ? colors.app.dark_200 : colors.app.dark_400,
-								fontFamily: "Inter-Medium",
 								justifyContent: "center",
+								fontSize: 21,
 							}}
 						>
 							{number}
@@ -400,9 +789,12 @@ const FavouriteCard = ({
 						<button onClick={() => setNumber(number + 1)}>
 							<div
 								style={{
+									paddingRight: 20,
 									paddingLeft: 10,
-									height: 25,
 									justifyContent: "center",
+									fontSize: 24,
+									fontWeight: "bold",
+									color: colors.tailwind.blue_gray._500,
 								}}
 							>
 								+
@@ -416,7 +808,7 @@ const FavouriteCard = ({
 					</button>
 				) : (
 					<button onClick={removeFavouriteItem}>
-						<p>Remove</p>
+						<p>Remove favourite</p>
 					</button>
 				)}
 			</div>
