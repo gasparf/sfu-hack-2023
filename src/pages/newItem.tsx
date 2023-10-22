@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import colors from "../colors";
 import nutritionix from "@/nutritionix-api";
@@ -16,6 +16,13 @@ import { RootState, useRootDispatch, useRootState } from "@/provider/store";
 import dateConsumptionAction from "@/provider/store/actions/dateConsumption.action";
 import cacheAction from "@/provider/store/actions/cache.action";
 import { useRouter } from "next/router";
+import AiButton from "@/components/AiButton";
+import { AuthContext } from "@/provider/context";
+import { FaArrowLeft } from "react-icons/fa6";
+import { AiFillDelete, AiFillStar, AiOutlineStar } from "react-icons/ai";
+import {  BiRightArrowAlt } from "react-icons/bi";
+
+
 
 const NewItemScreen = (props) => {
 	const app_date = useSelector<RootState>(
@@ -28,6 +35,18 @@ const NewItemScreen = (props) => {
 	const [modalItemID, setModalItemID] = useState<string>();
 	const [results, setResults] = useState<Array<SearchCommonItem> | null>([]);
 	const [loading, setLoading] = useState<boolean>(false);
+
+	const { currentUser } = useContext(AuthContext);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!currentUser) {
+            router.push(
+                "/"
+            )
+        }
+    }, [currentUser])
 
 	/**
 	 * Search for 20 foods from the database for a particular query
@@ -61,33 +80,6 @@ const NewItemScreen = (props) => {
 	 */
 	const OpenModal = (food_name) => setModalItemID(food_name);
 
-	// Header date system
-	const is_today = todayDate() === app_date;
-	const decompose_date = extract_data_from_date(app_date);
-
-	// Stringified week
-	const week = transform_week_to_string(
-		get_week_of_date(decompose_date[0], decompose_date[1], decompose_date[2])
-	);
-
-	// Check if the date month is current month
-	const is_current_month = parseInt(decompose_date[1]) == new Date().getMonth();
-	// Stringified month
-	const month = transform_month_to_string(decompose_date[1]);
-
-	// check if the date year is current year
-	const is_current_year =
-		parseInt(decompose_date[2]) === new Date().getFullYear();
-
-	const year = decompose_date[2];
-
-	const timing = is_today
-		? "Today"
-		: week +
-		  " " +
-		  decompose_date[0] +
-		  ((!is_current_month && " " + month) || "") +
-		  ((!is_current_year && " " + year) || "");
 
 	return (
 		<div
@@ -103,10 +95,11 @@ const NewItemScreen = (props) => {
 					margin: "0 auto",
 					display: "flex",
 					alignItems: "center",
-					justifyContent: "center",
-					flexDirection: "column",
+					justifyContent: "space-between",
+					padding: "0 20px"
 				}}
 			>
+				<div onClick={router.back}><FaArrowLeft/></div>
 				<p
 					style={{
 						fontSize: 18,
@@ -116,7 +109,7 @@ const NewItemScreen = (props) => {
 				>
 					{session.split("_").join(" ")}
 				</p>
-				<p>{timing}</p>
+				<div/>
 			</div>
 			<SearchInput
 				onSearch={Search}
@@ -175,6 +168,7 @@ const NewItemScreen = (props) => {
 					session={session}
 				/>
 			)}
+			<AiButton/>
 		</div>
 	);
 };
@@ -244,7 +238,9 @@ const ItemCard = ({
 				display: "flex",
 				alignItems: "center",
 				justifyContent: "space-between",
+				cursor: "pointer"
 			}}
+			onClick={() => onPress(food_name)}
 		>
 			<div>
 				<p
@@ -262,7 +258,7 @@ const ItemCard = ({
 				</p>
 			</div>
 			<div>
-				<button onClick={() => onPress(food_name)}>Show</button>
+				<button ><BiRightArrowAlt/></button>
 			</div>
 		</div>
 	);
@@ -360,7 +356,7 @@ const FavouriteText = ({ food_name, calories, onClick }) => {
 		dispatch(cacheAction.RemoveFavouriteItem(food_name, calories));
 	return (
 		<button onClick={isActive() ? removeFavourite : onClick}>
-			{isActive() ? "Added" : "Add favorite"}
+			{!isActive() ? <AiOutlineStar/> : <AiFillStar/>}
 		</button>
 	);
 };
@@ -467,7 +463,7 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 										padding: "0 20px",
 									}}
 								>
-									<div style={{ width: 90 }}></div>
+									<div onClick={onDismiss}><FaArrowLeft/></div>
 									<p
 										style={{
 											fontSize: 21,
@@ -629,7 +625,7 @@ const ItemModal = ({ ID, visible, onDismiss, session }) => {
 				</div>
 			</div>
 
-			<div style={{ width: "100%", height: "100vh" }}></div>
+			<div onClick={onDismiss} style={{ width: "100%", height: "100vh" }}></div>
 		</div>
 	);
 };
@@ -737,7 +733,6 @@ const FavouriteCard = ({
 					style={{
 						marginTop: 2,
 						color: colors.app.dark_300,
-						fontFamily: "Inter",
 						flexWrap: "wrap",
 					}}
 				>
@@ -808,7 +803,7 @@ const FavouriteCard = ({
 					</button>
 				) : (
 					<button onClick={removeFavouriteItem}>
-						<p>Remove favourite</p>
+						<AiFillDelete/>
 					</button>
 				)}
 			</div>

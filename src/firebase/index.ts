@@ -4,7 +4,7 @@ import "firebase/auth";
 import { NextOrObserver, User, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API,
+    apiKey: "AIzaSyBc4Q3z-hi1ZMVAjRQcDOPypgr3BJIRY3c",
     authDomain: "sfu-hack.firebaseapp.com",
     projectId: "sfu-hack",
     storageBucket: "sfu-hack.appspot.com",

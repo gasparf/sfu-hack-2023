@@ -15,6 +15,7 @@ import InputBox from "@/components/InputBox";
 import Welcome from "../components/Welcome";
 // import GoogleSignIn from "@/components/GoogleAuth";
 import nutritionix from "@/nutritionix-api";
+import AiButton from "@/components/AiButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,12 +41,9 @@ export default function Home() {
 			{currentUser && (
 				<>
 					<Body />
-					<div className="flex justify-center mt-3">
-						<button onClick={logout} className="bg-green-500 p-2 rounded text-white hover:bg-green-600 transition-duration-300">Logout</button>
-
-					</div>
 				</>
 			)}
+			
 		</main>
 	);
 }

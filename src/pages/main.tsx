@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import {
 	CommonItem,
@@ -12,6 +12,10 @@ import { useSelector } from "react-redux";
 import store, { RootDispatch, RootState, useRootState } from "@/provider/store";
 import colors from "@/colors";
 import RenderSessionCards from "@/components/RenderSessions";
+import Navbar from "@/components/Navbar";
+import AiButton from "@/components/AiButton";
+import { useRouter } from "next/router";
+import { AuthContext } from "@/provider/context";
 
 /**
  * Calulcation of the total consumption of the nutrients
@@ -56,6 +60,18 @@ const MainScreen = ({}: {}) => {
 		(state) => state.profile.calories_target
 	) as number;
 
+	const { currentUser,  } = useContext(AuthContext);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!currentUser) {
+            router.push(
+                "/"
+            )
+        }
+    }, [currentUser])
+
 	// Retrive data of a prticular date from state
 
 	/**
@@ -76,17 +92,19 @@ const MainScreen = ({}: {}) => {
 	const progress_data = GET_TOTAL_NUTRIENTS(dateConsumption, fixed_sessions);
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				alignItems: "center",
-				width: "100%",
-				flexDirection: "column",
-				paddingTop: 40,
-				background: "white",
-				paddingBottom: 40,
-			}}
-		>
+		<div>
+			<Navbar/>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					width: "100%",
+					flexDirection: "column",
+					paddingTop: 40,
+					background: "white",
+					paddingBottom: 40,
+				}}
+			>
 			<Calorimeter target={target} current={progress_data.calories} />
 			<Progresses progress_data={progress_data} />
 			<RenderSessionCards
@@ -94,6 +112,8 @@ const MainScreen = ({}: {}) => {
 				date_data={dateConsumption} // Current state date based data
 			/>
 		</div>
+		<AiButton/>
+	</div>
 	);
 };
 
