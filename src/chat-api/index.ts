@@ -2,7 +2,7 @@ import OpenAi from 'openai';
 
 
 const openai = new OpenAi({
-    apiKey: process.env.NEXT_PUBLIC_CHAT_API,
+    apiKey: "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",
     dangerouslyAllowBrowser: true
 })
 
