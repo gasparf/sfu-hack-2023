@@ -8,10 +8,10 @@ interface ReplyBox {
 
 const ReplyBox:React.FC<ReplyBox> = ({isPerson,date, text}) => {
   const [expand, setExpand] = useState(false)
-    // const boxStyles =  isPerson ? "justify-end" : ""
+    const boxStyles =  isPerson ? "bg-green-400" : "bg-white"
     return (
         <div className={isPerson != false ? "float-right clear-both" : "float-left clear-both"}>
-          <div className="mb-5 rounded-lg bg-green-400 w-[350px] p-3 m-2 shadow-lg ring-1 ring-zinc-700 sm:px-6">
+          <div className={`${boxStyles} mb-5 rounded-lg w-[350px] p-3 m-2 shadow-lg ring-1 ring-zinc-700 sm:px-6`}>
             <div className="flex space-x-3">
               <div className="flex-1 gap-4">
                 <p className="font-large text-sm text-white font-semibold mb-2">

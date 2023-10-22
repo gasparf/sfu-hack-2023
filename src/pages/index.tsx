@@ -12,7 +12,6 @@ import { AuthContext } from "@/provider/context";
 import Navbar from "@/components/Navbar";
 import Body from "@/components/Body";
 import InputBox from "@/components/InputBox";
-import SignIn from "@/components/SignIn";
 import Welcome from "../components/Welcome";
 // import GoogleSignIn from "@/components/GoogleAuth";
 import nutritionix from "@/nutritionix-api";

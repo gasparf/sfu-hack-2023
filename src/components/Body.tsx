@@ -38,7 +38,7 @@ const handleSubmission = async() =>{
   return (
     <div className="bg-gray-100 w-1/2 mx-auto mt-5 flex-col">
         <InputBox onChange={handleInputChange} onSubmit={handleSubmission} userInput={userInput} />
-        {chatResponse.map(response => <ReplyBox isPerson = {response.from === "user"} date={response.date.getMonth()} text={response.message}/>)}
+        {chatResponse.map(response => <ReplyBox isPerson = {response.from === "user"} date={`${response.date.getDate()}`+`/`+`${response.date.getMonth()}`+`/`+`${response.date.getYear()}`} text={response.message}/>)}
        
     </div>
   )

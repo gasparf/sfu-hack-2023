@@ -3,6 +3,7 @@ import React, { HTMLInputTypeAttribute, useContext, useEffect, useState } from '
 import GoogleSignIn from "@/components/GoogleSignIn";
 import { AuthContext } from "@/provider/context";
 import { useRouter } from "next/router";
+import Navbar from "@/components/Navbar";
 
 export default function Login() {
     const router = useRouter();
@@ -16,7 +17,7 @@ export default function Login() {
     useEffect(() => {
         if (currentUser) {
             router.push(
-                "/"
+                "/chat"
             )
         }
     }, [currentUser])
@@ -42,6 +43,7 @@ export default function Login() {
 	};
 
     return(
+      
         <div className="max-w-sm mx-auto p-4">
         <div className="space-y-4">
           <div>
