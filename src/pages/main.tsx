@@ -53,7 +53,7 @@ const MainScreen = ({}: {}) => {
 	) as DateConsumption;
 
 	const target = useSelector<RootState>(
-		(state) => state.profile.calories_target || 4000
+		(state) => state.profile.calories_target
 	) as number;
 
 	// Retrive data of a prticular date from state
@@ -106,9 +106,7 @@ const Progress: React.FC<{
 			width: 50,
 			height: 50,
 			borderRadius: 100,
-			background: `radial-gradient(closest-side, white 79%, transparent 80% 100%), conic-gradient(${
-				props.color1
-			} ${props.percentage * 100}%, ${props.color1}30 0)`,
+			background: `radial-gradient(closest-side, white 79%, transparent 80% 100%), conic-gradient(${props.color1} ${props.percentage}%, ${props.color1}30 0)`,
 		}}
 	></div>
 );
@@ -259,7 +257,7 @@ const Progresses: React.FC<{ progress_data: FoodNutrients }> = (props) => {
 								fontSize: 14,
 							}}
 						>
-							{(item.pd - item.total_consume).toFixed(2)}g left
+							{(item.total_consume - item.pd).toFixed(2)}g left
 						</p>
 					</div>
 				</div>

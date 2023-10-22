@@ -130,6 +130,7 @@ const styles = {
 		marginLeft: 10,
 		color: colors.app.dark_600,
 		textTransform: "capitalize",
+		fontWeight: 600,
 	},
 	calories: {
 		fontSize: 20,

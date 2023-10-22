@@ -168,7 +168,7 @@ const Item = ({
 					<p style={styles.info}>{sugar}g</p>
 					<p style={{ color: colors.app.dark_300, fontSize: 12 }}>{fat}g</p>
 				</div>
-				<button onPress={deleteItem}>Delete item</button>
+				<button onClick={deleteItem}>Delete item</button>
 			</div>
 		</div>
 	);
