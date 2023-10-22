@@ -40,7 +40,10 @@ export default function Home() {
 			{currentUser && (
 				<>
 					<Body />
-					<button onClick={logout}>logout</button>
+					<div className="flex justify-center mt-3">
+						<button onClick={logout} className="bg-green-500 p-2 rounded text-white hover:bg-green-600 transition-duration-300">Logout</button>
+
+					</div>
 				</>
 			)}
 		</main>

@@ -7,7 +7,7 @@ export default function InputBox({onChange, onSubmit, userInput}) {
     return (
         <div className="inputContainer flex w-full">
             <div className="inputBoxContainer p-1 flex-1 align-middle rounded-xl">
-                <input type="text" placeholder="Your Input Goes Here..." className="userInput flex w-full p-3 rounded-xl text-black border border-black" value={userInput} onChange={onChange}>
+                <input type="text" placeholder="Your Input Goes Here..." className="userInput flex w-full p-3 rounded-xl text-black border-2 border-gray-300 shadow-md " value={userInput} onChange={onChange}>
                 </input>
             </div>
             <div>
